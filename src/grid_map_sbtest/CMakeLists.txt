@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(grid_map)
+project(grid_map_sbtest)
 
 ## Importanto!
 add_definitions(--std=c++11)
@@ -11,7 +11,6 @@ add_definitions(--std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
-  grid_map
   grid_map_ros
   grid_map_cv
   grid_map_msgs
@@ -109,7 +108,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   ${catkin_INCLUDE_DIRS}
-#  LIBRARIES grid_map
+#  LIBRARIES grid_map_sbtest
 #  CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
@@ -126,14 +125,14 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(grid_map
-#   src/${PROJECT_NAME}/grid_map.cpp
+# add_library(grid_map_sbtest
+#   src/${PROJECT_NAME}/grid_map_sbtest.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(grid_map ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(grid_map_sbtest ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 # add_executable(grid_map_node src/grid_map_node.cpp)
@@ -164,7 +163,7 @@ target_link_libraries(grid_map_node ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS grid_map grid_map_node
+# install(TARGETS grid_map_sbtest grid_map_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

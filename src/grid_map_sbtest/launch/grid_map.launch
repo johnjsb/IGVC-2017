@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="grid_map_sbtest" name="grid_map_node" type="grid_map_node"  output="screen" />
+    <node pkg="grid_map_visualization" type="grid_map_visualization"
+        name="grid_map_visualization" output="screen">
+        <rosparam command="load" file="$(find grid_map_demos)/config/simple_demo.yaml" />
+    </node>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find grid_map_demos)/rviz/grid_map_demo.rviz" />
+</launch>

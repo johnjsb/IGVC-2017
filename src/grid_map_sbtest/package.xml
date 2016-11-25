@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>grid_map</name>
+  <name>grid_map_sbtest</name>
   <version>0.0.0</version>
-  <description>The grid_map package</description>
+  <description>Testing the grid map_package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
