@@ -102,7 +102,7 @@ add_definitions(-std=c++14)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
 #  LIBRARIES drivers
 #  CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs
 #  DEPENDS system_lib
@@ -132,7 +132,13 @@ include_directories(
 
 ## Declare a C++ executable
 # add_executable(drivers_node src/drivers_node.cpp)
-add_executable(steering_driver src/steering_driver.cpp src/SteeringDriver.cpp include/SteeringDriver.h)
+add_library(SnowBotSerial src/SnowBotSerial.cpp)
+target_link_libraries(SnowBotSerial -L/usr/lib/x86_64-linux-gnu -lserial -lpthread)
+add_library(SteeringDriver src/SteeringDriver.cpp)
+target_link_libraries(SteeringDriver SnowBotSerial)
+
+add_executable(steering_driver src/steering_driver.cpp)
+target_link_libraries(steering_driver SteeringDriver)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -142,6 +148,7 @@ add_executable(steering_driver src/steering_driver.cpp src/SteeringDriver.cpp in
 # target_link_libraries(drivers_node
 #   ${catkin_LIBRARIES}
 # )
+
 target_link_libraries(steering_driver ${catkin_LIBRARIES})
 
 #############

@@ -14,7 +14,8 @@ int main(int argc, char **argv){
     std::string node_name = "steering_driver";
 
     // Create an instance of your class
-    SteeringDriver steering_driver(argc, argv, node_name);
+    SteeringDriver steering_driver(argc, argv, node_name,
+        "/dev/ttyACM0", SerialStreamBuf::BAUD_9600);
 
     // Start up ros. This will continue to run until the node is killed
     ros::spin();

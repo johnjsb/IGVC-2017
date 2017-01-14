@@ -10,15 +10,19 @@
 #define DRIVERS_STEERING_DRIVER_H
 
 #include <iostream>
-#include <std_msgs/String.h>
+#include <geometry_msgs/Twist.h>
 #include <ros/ros.h>
+#include <SnowBotSerial.hpp>
 
 class SteeringDriver {
 public:
-    SteeringDriver(int argc, char **argv, std::string node_name);
+    SteeringDriver(int argc, char **argv, std::string node_name, std::string portName,
+        SerialStreamBuf::BaudRateEnum baud_rate);
 private:
-    void commandCallBack(const std_msgs::String::ConstPtr& msg);
+    void commandCallBack(const geometry_msgs::Twist::ConstPtr& twist_msg);
 
     ros::Subscriber command_subscriber;
+
+    SnowBotSerial snowBot;
 };
 #endif //DRIVERS_STEERING_DRIVER_H
