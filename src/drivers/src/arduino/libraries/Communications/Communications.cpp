@@ -4,9 +4,9 @@
 // message sent or received through serial must include this identifier
 // byte in order for the receiver of the message to know when to begin
 // interpreting the message.
-static const char Communications::IDENTIFIER = 'B';
+const char Communications::IDENTIFIER = 'B';
 // The size of the message that is to be sent or read after the identifer byte
-static const int Communications::MSG_SIZE = 4;
+const int Communications::MSG_SIZE = 4;
 
 /*
   Reads a float from the serial port of the arduino and returns the value.
@@ -18,7 +18,7 @@ static const int Communications::MSG_SIZE = 4;
   Postcondition: Returns the floating point value read from the serial port. Returns a
     NAN value if no proper protocol message was received before timing out.
 */
-static float Communications::readFloat() {
+float Communications::readFloat() {
   unsigned char message[MSG_SIZE];
 
   char receivedByte = Serial.read();
@@ -29,19 +29,12 @@ static float Communications::readFloat() {
   }
 
   while (Serial.available() < MSG_SIZE);
+  
   int i = 0;
-  int counter = 0;
-  const int TIME_OUT = 1000;
-  while (i < MSG_SIZE && counter < TIME_OUT) {
-    if (Serial.available() > 0) {
-      message[i++] = Serial.read();
-    }
-    counter++;
+  while (i < MSG_SIZE) {
+    message[i++] = Serial.read();
   }
-  // didn't read correctly, signal to wait for resend
-  if (i != MSG_SIZE) {
-    return NAN;
-  }
+
   return strRep_to_float(message);
 }
 
@@ -58,32 +51,19 @@ static float Communications::readFloat() {
     reading was not successful in this case the resulting twist_msg will contain a NAN value,
     and possibly other garbage values. Returns 0 if the reading was successful.
 */
-static int Communications::readTwistMsg(TwistMsg &twist_msg) {
+void Communications::readTwistMsg(TwistMsg &twist_msg) {
   twist_msg.linear_x = readFloat();
-  if (twist_msg.linear_x == NAN) {
-    return -1;
-  }
-  twist_msg.linear_y = readFloat();
-  if (twist_msg.linear_y == NAN) {
-    return -1;
-  }
-  twist_msg.linear_z = readFloat();
-  if (twist_msg.linear_z == NAN) {
-    return -1;
-  }
 
+  twist_msg.linear_y = readFloat();
+
+  twist_msg.linear_z = readFloat();
+  
   twist_msg.angular_x = readFloat();
-  if (twist_msg.angular_x == NAN) {
-    return -1;
-  }
+
   twist_msg.angular_y = readFloat();
-  if (twist_msg.angular_y == NAN) {
-    return -1;
-  }
+
   twist_msg.angular_z = readFloat();
-  if (twist_msg.angular_z == NAN) {
-    return -1;
-  }
+
 }
 
 /*
@@ -93,7 +73,7 @@ static int Communications::readTwistMsg(TwistMsg &twist_msg) {
     precision floating value value is sent through the serial port. The value sent
     will follow the little/big endian format of the arduino board.
 */
-static void Communications::sendFloat(const float value) {
+void Communications::sendFloat(const float value) {
   unsigned char * p = (unsigned char *) & value;
   Serial.write(IDENTIFIER);
   for (int i = 0; i < sizeof(float); i++) {
@@ -107,7 +87,7 @@ static void Communications::sendFloat(const float value) {
   Postcondition: The IDENTIFIER byte followed by the linear x, y, z then the angular x, y, z
     components are sent through serial in the listed order.
 */
-static void Communications::sendTwistMsg(TwistMsg const &twist_msg) {
+void Communications::sendTwistMsg(TwistMsg const &twist_msg) {
   sendFloat(twist_msg.linear_x);
   sendFloat(twist_msg.linear_y);
   sendFloat(twist_msg.linear_z);
@@ -125,7 +105,7 @@ static void Communications::sendTwistMsg(TwistMsg const &twist_msg) {
   Postcondition: returns a float that is interpreted in little/big endian format
     depending on the architecture of this CPU.
 */
-static float Communications::strRep_to_float(const char * str) {
+float Communications::strRep_to_float(const char * str) {
   float ff = 0;
   memcpy(&ff, str, sizeof(float));
   return ff;

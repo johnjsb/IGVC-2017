@@ -51,8 +51,12 @@ void SteeringDriver::commandCallBack(const geometry_msgs::Twist::ConstPtr& twist
       std::string str = snowBot.readProtocol();
       float ff = 0;
       memcpy(&ff, str.c_str(), sizeof(float));
-      
-      std::cout << "float: " << i << " " << ff << std::endl;
+      if (i < 3) {
+        std::cout << "linear: " << char('x' + i) << " " << ff << std::endl;
+      }
+      else {
+        std::cout << "angular: " << char('x' + i - 3) << " " << ff << std::endl;
+      }
     }
   } catch (const char * msg) {
     std::cerr << "Time out when reading..." << std::endl;

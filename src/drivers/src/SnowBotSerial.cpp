@@ -45,19 +45,8 @@ std::string SnowBotSerial::readProtocol() {
   
   char ch = serial_stream.get();
 
-  /*while (ch != IDENTIFIER) {
+  while (ch != IDENTIFIER) {
     ch = serial_stream.get();
-  }*/
-
-  // the maximum number of bytes to read for IDENTIFIER before giving up  
-  const int MAX_COUNT = 1000;
-
-  for (int i = 0; i < MAX_COUNT && ch != IDENTIFIER; i++) {
-    ch = serial_stream.get();
-  }
-  
-  if (ch != IDENTIFIER) {
-    throw "overtime exception";
   }
 
   // sets the minimum number of characters that must be read from the stream.

@@ -1,17 +1,13 @@
 #include <Communications.h>
+TwistMsg twist_msg;
 
 void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
-  // Check serial for availability first.
-  TwistMsg twist_msg;
-  if (Serial.available() > 0) {
-    int error = Communications::readTwistMsg(twist_msg);
-    if (error != -1) {
-      Communications::sendTwistMsg(twist_msg);
-    }
-  }
+
+  Communications::readTwistMsg(twist_msg);
+  Communications::sendTwistMsg(twist_msg);
 }
 
