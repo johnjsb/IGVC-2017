@@ -126,7 +126,7 @@
   <origin xyz="${wheel_displacement} ${-tY*wheel_width+tY*chassis_width/2} ${wheel_radius}" rpy="0 0 0" />
   <axis xyz="0 1 0" rpy="0 0 0" />
   <limit effort="100" velocity="100"/>
-  <joint_properties damping="1.0" friction="1.0"/>
+  <joint_properties damping="2.0" friction="1.0"/>
   <hardwareInterface>EffortJointInterface</hardwareInterface>
 </joint>
 
