@@ -1,13 +1,15 @@
 #include <Communications.h>
 TwistMsg twist_msg;
+Communications caller;
 
 void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
-
-  Communications::readTwistMsg(twist_msg);
-  Communications::sendTwistMsg(twist_msg);
+  caller.readTwistMsg(twist_msg);
+  if (!caller.read_error()) {
+    Communications::sendTwistMsg(twist_msg);
+  }
 }
 

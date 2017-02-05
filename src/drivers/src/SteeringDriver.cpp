@@ -8,6 +8,8 @@
 
 #include <SteeringDriver.h>
 
+#define DEBUG 1
+
 // The constructor for MyClass
 /*
  * Precondition: portName must be a valid and open serial port on this machine.
@@ -36,31 +38,28 @@ SteeringDriver::SteeringDriver(int argc, char **argv, std::string node_name,
  */
 void SteeringDriver::commandCallBack(const geometry_msgs::Twist::ConstPtr& twist_msg) {
 
-    snowBot.writeFloat((float) twist_msg->linear.x);
-    snowBot.writeFloat((float) twist_msg->linear.y);
-    snowBot.writeFloat((float) twist_msg->linear.z);
-    
-    snowBot.writeFloat((float) twist_msg->angular.x);
-    snowBot.writeFloat((float) twist_msg->angular.y);
-    snowBot.writeFloat((float) twist_msg->angular.z);
+  snowBot.sendTwistMsg(twist_msg);
 
-  try {
-    // used for debugging, to retrieve the twist message sent.
-    const int TWIST_SIZE = 6;
-    for (int i = 0; i < TWIST_SIZE; i++) {
-      std::string str = snowBot.readProtocol();
-      float ff = 0;
-      memcpy(&ff, str.c_str(), sizeof(float));
-      if (i < 3) {
-        std::cout << "linear: " << char('x' + i) << " " << ff << std::endl;
-      }
-      else {
-        std::cout << "angular: " << char('x' + i - 3) << " " << ff << std::endl;
-      }
+#if DEBUG
+  std::string message = snowBot.readString();
+  if (!snowBot.read_error()) {
+    const char * msgPtr = message.c_str();
+    const int NUM_OF_FLOATS = 6; // 6 floats in a twist_msg.
+    float floatArr[NUM_OF_FLOATS];
+    for (int i = 0; i < NUM_OF_FLOATS; i++) {
+      memcpy(&floatArr[i], msgPtr + sizeof(float) * i, sizeof(float));
     }
-  } catch (const char * msg) {
-    std::cerr << "Time out when reading..." << std::endl;
-    return;
+    for (int i = 0; i < NUM_OF_FLOATS / 2; i++) {
+      std::cout << "linear " << char('x' + i) << ": " << floatArr[i] << " ";
+    }
+    for (int i = 3; i < NUM_OF_FLOATS; i++) {
+      std::cout << "angular " << char('x' + i - 3) << ": " << floatArr[i] << " ";
+    }
+    std::cout << std::endl;
   }
+  else {
+    std::cout << "Reading error!" << std::endl;
+  }
+#endif
 }
 
