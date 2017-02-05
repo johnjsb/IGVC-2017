@@ -8,7 +8,7 @@
 
 #include <SteeringDriver.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 // The constructor for MyClass
 /*

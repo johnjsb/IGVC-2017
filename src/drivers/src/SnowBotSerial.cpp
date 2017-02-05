@@ -1,5 +1,4 @@
 #include <SnowBotSerial.hpp>
-#define DEBUG 1
 using namespace LibSerial;
 
 // The identifier byte that is used in this serial protocol. Every
